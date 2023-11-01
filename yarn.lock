@@ -1055,11 +1055,6 @@
   resolved "https://registry.yarnpkg.com/@tootallnate/once/-/once-2.0.0.tgz#f544a148d3ab35801c1f633a7441fd87c2e484bf"
   integrity sha512-XCuKFP5PS55gnMVu3dty8KPatLqUoy/ZYzDzAGCQ8JNFCkLXzmI7vNHCR+XpbZaMWQK/vQubr7PkYq8g470J/A==
 
-"@types/a-big-triangle@^1.0.1":
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/@types/a-big-triangle/-/a-big-triangle-1.0.3.tgz#a45c27bcb550390ed32d27b05baa2849cbc6854f"
-  integrity sha512-V1nBa6NdcaEDVqYOGx+Yk1PgbAV//Pnj7ES0vZ2L/e2/RWK6SuAWYKMW5EmMWcDWrkcoRCVJnNHDt77MSXPIsA==
-
 "@types/babel__core@^7.1.14":
   version "7.20.5"
   resolved "https://registry.yarnpkg.com/@types/babel__core/-/babel__core-7.20.5.tgz#3df15f27ba85319caa07ba08d0721889bb39c017"
@@ -1231,11 +1226,6 @@
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/@types/fuzzaldrin-plus/-/fuzzaldrin-plus-0.0.1.tgz#bfe5e25bc5b4066848171baf7a8aaf30e267d30a"
   integrity sha1-v+XiW8W0BmhIFxuveoqvMOJn0wo=
-
-"@types/gl-shader@^4.2.2":
-  version "4.2.3"
-  resolved "https://registry.yarnpkg.com/@types/gl-shader/-/gl-shader-4.2.3.tgz#7da665bee0f40da838e684857c63348a44ed4c92"
-  integrity sha512-L69MMzHs36P6t6an+pyhYHIKEllWlK5UpHNIQx0ng9FqDUe/CpKoVKXLDVjNq7H3BQzhbxkLAKdQO5O2Zj7suA==
 
 "@types/glob@^5.0.35":
   version "5.0.35"
