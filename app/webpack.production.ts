@@ -60,11 +60,14 @@ const crashConfig = merge({}, common.crash, config, {
   ],
 })
 
+const gpuConfig = merge({}, common.gpu, config, {})
+
 // eslint-disable-next-line no-restricted-syntax
 export default [
   mainConfig,
   rendererConfig,
   crashConfig,
+  gpuConfig,
   cliConfig,
   highlighterConfig,
 ]

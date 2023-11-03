@@ -109,6 +109,23 @@ export const crash = merge({}, commonConfig, {
   ],
 })
 
+export const gpu = merge({}, commonConfig, {
+  entry: { gpu: path.resolve(__dirname, 'src/gpu/index') },
+  target: 'electron-renderer',
+  plugins: [
+    new HtmlWebpackPlugin({
+      title: 'GitHub Desktop',
+      filename: 'gpu.html',
+      chunks: ['gpu'],
+    }),
+    new webpack.DefinePlugin(
+      Object.assign({}, replacements, {
+        __PROCESS_KIND__: JSON.stringify('gpu'),
+      })
+    ),
+  ],
+})
+
 export const cli = merge({}, commonConfig, {
   entry: { cli: path.resolve(__dirname, 'src/cli/main') },
   target: 'node',

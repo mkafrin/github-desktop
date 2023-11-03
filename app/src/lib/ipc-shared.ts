@@ -81,6 +81,10 @@ export type RequestChannels = {
   'notification-event': NotificationCallback<DesktopAliveEvent>
   'set-window-zoom-factor': (zoomFactor: number) => void
   'show-installing-update': () => void
+  'gpu-ready': () => void
+  'gpu-quit': () => void
+  'gpu-dataURL': (contents: ArrayBufferLike, dataURL: string) => void
+  'convertDDSImage': (contents: ArrayBufferLike) => void
 }
 
 /**

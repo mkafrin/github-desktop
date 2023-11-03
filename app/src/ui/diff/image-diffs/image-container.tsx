@@ -1,7 +1,8 @@
 import * as React from 'react'
 
+import * as ipcRenderer from '../../../lib/ipc-renderer'
+
 import { Image } from '../../../models/diff'
-import { convertDDSImage } from './dds-converter'
 
 interface IImageProps {
   /** The image contents to render */
@@ -18,6 +19,16 @@ interface IImageState {
   readonly imageSource: string | null
 }
 
+function areBuffersEqual(buf1: ArrayBufferLike, buf2: ArrayBufferLike) {
+  if (buf1.byteLength != buf2.byteLength) return false
+  var dv1 = new Int8Array(buf1)
+  var dv2 = new Int8Array(buf2)
+  for (var i = 0; i != buf1.byteLength; i++) {
+    if (dv1[i] != dv2[i]) return false
+  }
+  return true
+}
+
 export class ImageContainer extends React.Component<IImageProps, IImageState> {
   public constructor(props: IImageProps) {
     super(props)
@@ -26,10 +37,28 @@ export class ImageContainer extends React.Component<IImageProps, IImageState> {
     }
   }
 
-  public loadImage(image: Image) {
+  public async convertDDSImage(
+    contents: ArrayBufferLike
+  ): Promise<string | null> {
+    return new Promise((resolve, reject) => {
+      const listener = (
+        _: Electron.IpcRendererEvent,
+        responseContents: ArrayBufferLike,
+        dataURL: string
+      ) => {
+        if (!areBuffersEqual(contents, responseContents)) return
+        resolve(dataURL)
+        ipcRenderer.removeListener('gpu-dataURL', listener)
+      }
+      ipcRenderer.on('gpu-dataURL', listener)
+      ipcRenderer.send('convertDDSImage', contents)
+    })
+  }
+
+  public async loadImage(image: Image) {
     if (image.mediaType === 'image/vnd-ms.dds') {
       try {
-        const dataURL = convertDDSImage(image.rawContents)
+        const dataURL = await this.convertDDSImage(image.rawContents)
         this.setState({
           imageSource: dataURL,
         })

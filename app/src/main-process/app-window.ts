@@ -109,6 +109,10 @@ export class AppWindow {
       event.returnValue = true
     })
 
+    ipcMain.on('gpu-dataURL', (_, contents, dataURL) => {
+      ipcWebContents.send(this.window.webContents, 'gpu-dataURL', contents, dataURL)
+    })
+
     this.window.on('close', e => {
       // On macOS, closing the window doesn't mean the app is quitting. If the
       // app is updating, we will prevent the window from closing only when the
@@ -349,7 +353,7 @@ export class AppWindow {
     d.showCertificateTrustDialog(
       this.window,
       { certificate, message },
-      () => {}
+      () => { }
     )
   }
 

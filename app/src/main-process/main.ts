@@ -46,11 +46,13 @@ import {
   showNotification,
 } from 'desktop-notifications'
 import { initializeDesktopNotifications } from './notifications'
+import { GPUWindow } from './gpu-window'
 
 app.setAppLogsPath()
 enableSourceMaps()
 
 let mainWindow: AppWindow | null = null
+let gpuWindow: GPUWindow | null = null
 
 const launchTime = now()
 
@@ -75,6 +77,11 @@ function handleUncaughtException(error: Error) {
   if (mainWindow) {
     mainWindow.destroy()
     mainWindow = null
+  }
+
+  if (gpuWindow) {
+    gpuWindow.destroy()
+    gpuWindow = null
   }
 
   showUncaughtException(isLaunchError, error)
@@ -305,6 +312,7 @@ app.on('ready', () => {
   possibleProtocols.forEach(protocol => setAsDefaultProtocolClient(protocol))
 
   createWindow()
+  createGPUWindow()
 
   const orderedWebRequest = new OrderedWebRequest(
     session.defaultSession.webRequest
@@ -418,7 +426,7 @@ app.on('ready', () => {
     const menuItem = currentMenu.getMenuItemById(id)
     if (menuItem) {
       const window = BrowserWindow.fromWebContents(event.sender) || undefined
-      const fakeEvent = { preventDefault: () => {}, sender: event.sender }
+      const fakeEvent = { preventDefault: () => { }, sender: event.sender }
       menuItem.click(fakeEvent, window, event.sender)
     }
   })
@@ -741,7 +749,7 @@ function createWindow() {
         installExtension(extension, {
           loadExtensionOptions: { allowFileAccess: true },
         })
-      } catch (e) {}
+      } catch (e) { }
     }
   }
 
@@ -770,6 +778,42 @@ function createWindow() {
   window.load()
 
   mainWindow = window
+}
+
+function createGPUWindow() {
+  const window = new GPUWindow()
+
+  if (__DEV__) {
+    const {
+      default: installExtension,
+      REACT_DEVELOPER_TOOLS,
+    } = require('electron-devtools-installer')
+
+    const ChromeLens = {
+      id: 'idikgljglpfilbhaboonnpnnincjhjkd',
+      electron: '>=1.2.1',
+    }
+
+    const axeDevTools = {
+      id: 'lhdoppojpmngadmnindnejefpokejbdd',
+      electron: '>=1.2.1',
+      Permissions: ['tabs', 'debugger'],
+    }
+
+    const extensions = [REACT_DEVELOPER_TOOLS, ChromeLens, axeDevTools]
+
+    for (const extension of extensions) {
+      try {
+        installExtension(extension, {
+          loadExtensionOptions: { allowFileAccess: true },
+        })
+      } catch (e) { }
+    }
+  }
+
+  window.load()
+
+  gpuWindow = window
 }
 
 /**
